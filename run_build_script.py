@@ -7,12 +7,12 @@ import shutil
 exe_name = "rivals_workshop_assistant"
 
 vscode_extension_project_path = Path(
-    r"E:\Users\User\WebstormProjects\vscode_extension\rivals-lib"
+    r"D:\\_ZP\\_vsc_extensions\\orso-workshop-assistant"
 )
 vscode_extension_path = vscode_extension_project_path / r"out"
 
 gmedit_extension_project_path = Path(
-    r"D:/Users/User/IdeaProjects/rivals-workshop-assistant-gmedit"
+    r""
 )
 gmedit_extension_name = Path("rivals-workshop-assistant-gmedit")
 gmedit_extension_path = gmedit_extension_project_path / gmedit_extension_name
@@ -23,10 +23,11 @@ exe_path = fr"dist/{exe_name}.exe"
 # version_type = 'minor'
 version_type = "patch"
 
+python_modules_path = "C:/Users/Orso/AppData/Local/Programs/Python/Python39/Lib/site-packages"
 
 def build_exe():
-    build_script = (
-        "pyinstaller --noconfirm --onefile --console --name "
+    build_script = (       
+        "pyinstaller --noconfirm --onefile --console --paths='{python_modules_path}' --name "
         f'"{exe_name}" '
         '"rivals_workshop_assistant/main.py"'
     )
