@@ -51,11 +51,11 @@ class Script(File):
     def working_content(self, value):
         self._working_content = value
 
-    def save(self, root_dir: Path):
+    def save(self, root_dir: Path, forced = False):
         if self.working_content == "":
             logger.warning(f"Trying to save an empty file {self.path}")
             return
-        if self.working_content != self.original_content:
+        if (self.working_content != self.original_content or forced):
             with open(
                 (root_dir / self.path),
                 "w",
@@ -104,6 +104,6 @@ def read_lib_inject(run_context: RunContext) -> List[Script]:
     return read_scripts(run_context, folder=INJECT_FOLDER)
 
 
-def save_scripts(root_dir: Path, scripts: List["Script"]):
+def save_scripts(root_dir: Path, scripts: List["Script"], forced = False):
     for script in scripts:
-        script.save(root_dir)
+        script.save(root_dir, forced)

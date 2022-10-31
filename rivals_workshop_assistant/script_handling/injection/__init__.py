@@ -26,7 +26,7 @@ def handle_injection(
 
 
 def freshen_scripts_that_have_modified_dependencies(
-    dotfile: dict, scripts, inject_scripts: list["Script"]
+    run_context: RunContext, scripts, inject_scripts: list["Script"]
 ):
     """Sets each script with modified dependencies to be considered freshly changed"""
 
@@ -34,8 +34,9 @@ def freshen_scripts_that_have_modified_dependencies(
         if inject_script.is_fresh:
             # if an inject file has changed, mark its clients for update
             clients = get_clients_for_injection(
-                dotfile=dotfile, injection_script=inject_script.path
+                dotfile=run_context.dotfile, injection_script=inject_script.path
             )
+
             for script in scripts:
                 if script.path in clients:
-                    script.file_is_fresh = True
+                    script.is_fresh = True

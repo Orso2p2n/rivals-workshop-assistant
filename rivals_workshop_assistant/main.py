@@ -181,7 +181,7 @@ async def update_files(exe_dir: Path, root_dir: Path, mode: Mode.ALL):
     lib_inject_scripts = read_lib_inject(run_context)
 
     freshen_scripts_that_have_modified_dependencies(
-        run_context.dotfile,
+        run_context,
         scripts=scripts,
         inject_scripts=user_inject_scripts + lib_inject_scripts,
     )

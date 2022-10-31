@@ -7,9 +7,9 @@ import shutil
 exe_name = "rivals_workshop_assistant"
 
 vscode_extension_project_path = Path(
-    r"D:\\_ZP\\_vsc_extensions\\orso-workshop-assistant"
+    r"D:\\_ZP\\_vsc_extensions\\zp-workshop-assistant"
 )
-vscode_extension_path = vscode_extension_project_path / r"out"
+vscode_extension_path = vscode_extension_project_path / r"dist\\exe"
 
 gmedit_extension_project_path = Path(
     r""
@@ -37,11 +37,11 @@ def build_exe():
 def build_vscode():
     shutil.copy(src=exe_path, dst=vscode_extension_path)
 
-    wd = os.getcwd()
-    os.chdir(vscode_extension_project_path)
-    vscode_publish_script = f"vsce publish {version_type}"
-    subprocess.call(vscode_publish_script, shell=True)
-    os.chdir(wd)
+    # wd = os.getcwd()
+    # os.chdir(vscode_extension_project_path)
+    # vscode_publish_script = f"vsce publish {version_type}"
+    # subprocess.call(vscode_publish_script, shell=True)
+    # os.chdir(wd)
 
 
 def build_gmedit():
@@ -60,3 +60,4 @@ def build_gmedit():
 
 if __name__ == "__main__":
     build_exe()
+    build_vscode()
