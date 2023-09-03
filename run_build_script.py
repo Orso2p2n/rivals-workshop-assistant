@@ -7,7 +7,7 @@ import shutil
 exe_name = "rivals_workshop_assistant"
 
 vscode_extension_project_path = Path(
-    r"D:\\_ZP\\_vsc_extensions\\zp-workshop-assistant"
+    r"D:\\_Projects\\_ZP\\_vsc_extensions\\zp-workshop-assistant"
 )
 vscode_extension_path = vscode_extension_project_path / r"dist\\exe"
 
@@ -23,7 +23,7 @@ exe_path = fr"dist/{exe_name}.exe"
 # version_type = 'minor'
 version_type = "patch"
 
-python_modules_path = "C:/Users/Orso/AppData/Local/Programs/Python/Python39/Lib/site-packages"
+python_modules_path = "C:/Users/orsop/AppData/Local/Programs/Python/Python311/Lib/site-packages"
 
 def build_exe():
     build_script = (       
