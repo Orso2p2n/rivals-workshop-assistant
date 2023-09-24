@@ -64,10 +64,12 @@ class Anim(TagObject):
         self.anim_hashes = anim_hashes
         self.file_is_fresh = file_is_fresh
 
+        self.create_hitboxes()
+
         self._frame_hash = frame_hash
         if self._frame_hash is None:
             self._frame_hash = self._get_frame_hash()
-        self.is_fresh = self._get_is_fresh()
+        self.is_fresh = self._get_is_fresh() 
         self._save_hash()
 
     @property
@@ -79,6 +81,21 @@ class Anim(TagObject):
         # Remove HURTBOX from animation name.
         # It's just used to indicate the attack gets a hurtbox.
         return self.name.strip("HURTBOX").strip()
+
+    def create_hitboxes(self):
+        from rivals_workshop_assistant.aseprite_handling.hitboxes import Hitbox
+
+        self.hitboxes=[]
+        for hitbox_layer in self.content.layers.hitboxes:
+            hitboxes = Hitbox.from_layer(
+                self,
+                hitbox_layer,
+                self.content.file_data.frames
+            )
+
+            self.hitboxes.append(hitboxes)
+
+        print(self.hitboxes)
 
     def __get_keys(self):
         return self.name, self.start, self.end, self.windows, self.is_fresh

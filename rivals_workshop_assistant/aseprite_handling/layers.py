@@ -10,6 +10,7 @@ SPLIT = "SPLIT"
 OPT = "OPT"
 HURTBOX = "HURTBOX"
 HURTMASK = "HURTMASK"
+HITBOX = "HITBOX"
 
 NORMAL_LAYER_TYPE = 0
 GROUP_LAYER_TYPE = 1
@@ -25,7 +26,7 @@ class AsepriteLayers:
     """Groups types of layers in assistant aseprite files"""
 
     def __init__(
-        self, normals: List = None, hurtbox=None, hurtmask=None, splits=None, opts=None
+        self, normals: List = None, hurtbox=None, hurtmask=None, splits=None, opts=None, hitboxes=None
     ):
         if normals is None:
             normals = []
@@ -41,9 +42,14 @@ class AsepriteLayers:
             opts = []
         self.opts = opts
 
+        if hitboxes is None:
+            hitboxes = []
+        self.hitboxes = hitboxes
+
     @classmethod
     def from_file(cls, file_data: RawAsepriteFile):
         normals = []
+        hitboxes = []
         hurtbox = None
         hurtmask = None
         splits = defaultdict(list)
@@ -69,6 +75,8 @@ class AsepriteLayers:
                 hurtbox = layer
             elif name == HURTMASK:
                 hurtmask = layer
+            elif name.startswith(f"{HITBOX}"):
+                hitboxes.append(layer)
             # todo add optional and either here as elifs
             else:
                 normals.append(layer)
@@ -78,4 +86,5 @@ class AsepriteLayers:
             hurtmask=hurtmask,
             splits=splits,
             opts=opts,
+            hitboxes=hitboxes,
         )

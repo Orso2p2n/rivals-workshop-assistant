@@ -1,6 +1,8 @@
 import asyncio
 import datetime
 import sys
+sys.path += "./"
+
 from pathlib import Path
 
 import notifiers
