@@ -97,3 +97,75 @@ air_dodge_sound = asset_get("sfx_quick_dodge");
 //visual offsets for when you're in Ranno's bubble
 bubble_x = 0;
 bubble_y = 8;
+
+lib_draw_sprite()
+
+// #region vvv LIBRARY DEFINES AND MACROS vvv
+// DANGER File below this point will be overwritten! Generated defines and macros below.
+// Write NO-INJECT in a comment above this area to disable injection.
+trackpoints = [
+	{
+		anim_name: "fair", anim_id: sprite_get("fair"), name: "track_1", data: [
+			{frame: 2, x: 37 - sprite_get_xoffset(sprite_get("fair")), y: 45 - sprite_get_xoffset(sprite_get("fair")), width: 28, height: 28},
+			{frame: 3, x: 39 - sprite_get_xoffset(sprite_get("fair")), y: 45 - sprite_get_xoffset(sprite_get("fair")), width: 28, height: 28},
+			{frame: 4, x: 15 - sprite_get_xoffset(sprite_get("fair")), y: 48 - sprite_get_xoffset(sprite_get("fair")), width: 28, height: 28},
+		]
+	},
+	{
+		anim_name: "fair", anim_id: sprite_get("fair"), name: "track_2", data: [
+			{frame: 1, x: 18 - sprite_get_xoffset(sprite_get("fair")), y: 16 - sprite_get_xoffset(sprite_get("fair")), width: 28, height: 28},
+			{frame: 2, x: 18 - sprite_get_xoffset(sprite_get("fair")), y: 16 - sprite_get_xoffset(sprite_get("fair")), width: 28, height: 28},
+		]
+	},
+	{
+		anim_name: "jab", anim_id: sprite_get("jab"), name: "hitbox_1", data: [
+			{frame: 1, x: 46 - sprite_get_xoffset(sprite_get("jab")), y: 27 - sprite_get_xoffset(sprite_get("jab")), width: 28, height: 28},
+			{frame: 2, x: 46 - sprite_get_xoffset(sprite_get("jab")), y: 27 - sprite_get_xoffset(sprite_get("jab")), width: 28, height: 28},
+			{frame: 3, x: 46 - sprite_get_xoffset(sprite_get("jab")), y: 27 - sprite_get_xoffset(sprite_get("jab")), width: 28, height: 28},
+			{frame: 4, x: 48 - sprite_get_xoffset(sprite_get("jab")), y: 16 - sprite_get_xoffset(sprite_get("jab")), width: 28, height: 28},
+		]
+	},
+];
+
+#define lib_draw_sprite // Version 0
+    // sprite, subimg, x, y, ?{rot=0, col=c_white, alpha=1}
+    var sprite = argument[0]
+    if is_string(sprite) {
+        sprite = sprite_get(sprite)
+    }
+
+    var subimg = argument[1]
+    var x = argument[2]
+    var y = argument[3]
+    var params = {}
+    if argument_count == 5 {
+        params = argument[4]
+    }
+    if argument_count > 5 {
+        print("draw_sprite called with too many arguments. Use a parameter struct instead. `lib_draw_sprite(_sprite, _subimg, _x, _y, {alpha:0.5})`") // Todo, improve this with instructions.
+        var die = 1/0
+    }
+
+    var xscale = 1
+    if 'xscale' in params {
+        xscale = params.xscale
+    }
+    var yscale = 1
+    if 'yscale' in params {
+        yscale = params.yscale
+    }
+    var rot = 0
+    if 'rot' in params {
+        rot = params.rot
+    }
+    var col = c_white
+    if 'col' in params {
+        col = params.col
+    }
+    var alpha = 1
+    if 'alpha' in params {
+        alpha = params.alpha
+    }
+    draw_sprite_ext(sprite, subimg, x, y, xscale, yscale, rot, col, alpha)
+// DANGER: Write your code ABOVE the LIBRARY DEFINES AND MACROS header or it will be overwritten!
+// #endregion

@@ -37,8 +37,7 @@ def apply_injection(
     """Updates scripts with supplied dependencies."""
     for script in scripts:
         anim = _get_anim_for_script(script, anims)
-        if script.is_fresh or (anim is not None and anim.is_fresh):
-            _apply_injection_to_script(script, injection_library, anim, dotfile)
+        _apply_injection_to_script(script, injection_library, anim, dotfile, anims)
 
 
 def _apply_injection_to_script(
@@ -46,10 +45,21 @@ def _apply_injection_to_script(
     injection_library: List[GmlInjection],
     anim: Anim,
     dotfile: dict = None,
+    anims: List[Anim] = None
 ):
     """Updates the dependencies supplied to the script."""
-    if _should_inject(script.working_content):
+    anim_is_fresh = (anim is not None and anim.is_fresh)
+    script_is_fresh = script.is_fresh
 
+    is_init = (script.path.name == "init.gml" and anims is not None)
+
+    if (is_init):
+        for _anim in anims:
+            if len(_anim.trackpoints) > 0 and _anim.is_fresh:
+                anim_is_fresh = True
+                break
+
+    if (script_is_fresh or anim_is_fresh) and _should_inject(script.working_content):
         needed_injects = _get_injects_needed_in_gml(
             gml=_get_script_contents(script.working_content),
             injection_library=injection_library,
@@ -60,7 +70,12 @@ def _apply_injection_to_script(
             script=script,
         )
 
-        needed_gmls = [
+        needed_gmls = []
+
+        if is_init:
+            needed_gmls.append(_get_trackpoints_inject(anims))
+
+        needed_gmls += [
             injection.gml for injection in needed_injects
         ] + _get_anim_data_gmls_needed_in_gml(anim)
 
@@ -147,3 +162,12 @@ def _get_script_contents(script: str):
     pattern = rf"(?:{INJECTION_START_MARKER}|{old_markers_pattern})"
     contents = re.split(pattern=pattern, string=script)[0].rstrip()
     return contents
+
+def _get_trackpoints_inject(anims: List[Anim]):
+    inject = "trackpoints = [\n"
+    for anim in anims:
+        inject += anim.trackpoints_gml
+
+    inject += "];"
+
+    return inject

@@ -64,7 +64,7 @@ class Anim(TagObject):
         self.anim_hashes = anim_hashes
         self.file_is_fresh = file_is_fresh
 
-        self.create_hitboxes()
+        self._create_trackpoints()
 
         self._frame_hash = frame_hash
         if self._frame_hash is None:
@@ -82,20 +82,39 @@ class Anim(TagObject):
         # It's just used to indicate the attack gets a hurtbox.
         return self.name.strip("HURTBOX").strip()
 
-    def create_hitboxes(self):
-        from rivals_workshop_assistant.aseprite_handling.hitboxes import Hitbox
+    def _create_trackpoints(self):
+        from rivals_workshop_assistant.aseprite_handling.trackpoints import Trackpoint
 
-        self.hitboxes=[]
-        for hitbox_layer in self.content.layers.hitboxes:
-            hitboxes = Hitbox.from_layer(
+        self.trackpoints=[]
+        for trackpoint_layer in self.content.layers.trackpoints:
+            trackpoints = Trackpoint.from_layer(
                 self,
-                hitbox_layer,
+                trackpoint_layer,
                 self.content.file_data.frames
             )
 
-            self.hitboxes.append(hitboxes)
+            self.trackpoints.append(trackpoints)
 
-        print(self.hitboxes)
+        self._init_trackpoints_gml()
+
+    def _init_trackpoints_gml(self):
+        trackpoints_gml = ""
+
+        name : str = None
+        for trackpoint in self.trackpoints:
+            for point in trackpoint:
+                if (point.name != name):
+                    if (name is not None):
+                        trackpoints_gml += "\t\t]\n\t},\n"
+
+                    name = point.name
+                    trackpoints_gml += "\t{\n" + f"\t\tanim_name: \"{self.name}\", anim_id: sprite_get(\"{self.name}\"), name: \"{name}\", data: [\n"
+
+                trackpoints_gml += f"\t\t\t{point.gml},\n"
+
+        trackpoints_gml += "\t\t]\n\t},\n"
+
+        self.trackpoints_gml = trackpoints_gml
 
     def __get_keys(self):
         return self.name, self.start, self.end, self.windows, self.is_fresh
