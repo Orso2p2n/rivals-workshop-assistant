@@ -130,3 +130,5 @@ dmypy.json
 /rivals_workshop_assistant/assistant_config.yaml
 /rivals_workshop_assistant/secrets.py
 secrets.py
+WorkshopCharacterTemplate/assistant/.assistant
+WorkshopCharacterTemplate/assistant/.inject
