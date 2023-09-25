@@ -1,9 +1,0 @@
-assistant_version: None
-library_version: 1.0.3
-last_updated: 2023-09-24
-injection_clients: {}
-script_processed_time: &id001 2023-09-24 23:11:53.060160
-anim_processed_time: *id001
-anim_hashes:
-  jab:
-    jab: f9e11998a2f47ee0f79f9d9181b6aeb5
